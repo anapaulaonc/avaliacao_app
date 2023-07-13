@@ -8,12 +8,25 @@
 <body>
     <h1>Register page</h1>
     <form method="POST">
-        {{ form.hidden_tag() }}
-        {{ form.email.label }} {{ form.email() }}<br>
-        {{form.matricula.label }} {{ form.matricula() }}<br>
-        {{ form.curso.label }} {{ form.curso() }}<br>
-        {{ form.senha.label }} {{ form.senha() }}<br>
-    
-        {{ form.submit() }}
+        <h3 align="center">Cadastro de Estudante</h3>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" placeholder="Digite seu email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="matricula">Matricula</label>
+            <input type="text" name="matricula" placeholder="Digite sua matricula" class="form-control" required>
+        </div>
+        <div class="form-group">
+            
+            <label for="curso">Curso</label>
+            <input type="text" name="curso" placeholder="Digite seu curso" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="senha">Senha</label>
+            <input type="password" name="senha" placeholder="Digite sua senha" class="form-control" required>   
+        </div>
+        <br/>
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
 </body>
 </html>

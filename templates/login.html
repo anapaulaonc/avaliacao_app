@@ -8,10 +8,17 @@
 <body>
     <h1>Login page</h1>
     <form method="POST">
-        {{ form.hidden_tag() }}
-        {{ form.email.label }} {{ form.email() }}<br>
-        {{ form.senha.label }} {{ form.senha() }}<br>
-        {{ form.submit() }
+        <h3 align="center">Login de Estudantes</h3>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" placeholder="Digite seu email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="senha">Senha</label>
+            <input type="password" name="senha" placeholder="Digite sua senha" class="form-control" required>
+        </div>
+        <br/>
+        <button type="submit" class="btn btn-primary">Login</button>
     </form>
     <a href="{{ url_for('register') }}">Não tem uma conta ainda? Cadastre-se!</a><br>')}}"
 </body>
