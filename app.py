@@ -62,7 +62,7 @@ def main():
         
     conn.close()
 
-    return render_template('main.html')
+    return render_template('main.html', turmas=turmas)
 
 @app.route('/ver_avaliacoes/<turma_id>', methods=['GET'])
 def ver_avaliacoes(turma_id):

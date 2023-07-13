@@ -13,131 +13,49 @@ with open('schema.sql') as f:
     connection.executescript(f.read())
 
 cur = connection.cursor()
+           
+def populate_db():
+    # Cria os objetos DAO
+    estudante_dao = EstudanteDAO('database.db')
+    professor_dao = ProfessorDAO('database.db')
+    disciplina_dao = DisciplinaDAO('database.db')
+    turma_dao = TurmaDAO('database.db')
+    departamento_dao = DepartamentoDAO('database.db')
+    avaliacao_dao = AvaliacaoDAO('database.db')
+    denuncia_dao = DenunciaDAO('database.db')
 
-# Populando a tabela Estudantes            
+    # Insere dados na tabela Departamentos
+    departamento_dao.insert_departamento(("Departamento de Matemática",))
+    departamento_dao.insert_departamento(("Departamento de Física",))
+    departamento_dao.insert_departamento(("Departamento de Química",))
 
-estudante_dao = EstudanteDAO('database.db')
+    # Insere dados na tabela Professores
+    professor_dao.insert_professor(("Professor Matemática", 1))
+    professor_dao.insert_professor(("Professor Física", 2))
+    professor_dao.insert_professor(("Professor Química", 3))
 
-estudantes = [
-    ('email1@unb.br', 'matricula1', 'curso1', 'senha1', 0),
-    ('email2@unb.br', 'matricula2', 'curso2', 'senha2', 1),
-    ('email3@unb.br', 'matricula3', 'curso3', 'senha3', 1),
+    # Insere dados na tabela Disciplinas
+    disciplina_dao.insert_disciplina(("Matemática Básica", 1))
+    disciplina_dao.insert_disciplina(("Física Básica", 2))
+    disciplina_dao.insert_disciplina(("Química Básica", 3))
 
-]
+    # Insere dados na tabela Turmas
+    turma_dao.insert_turma((1, 1))
+    turma_dao.insert_turma((2, 2))
+    turma_dao.insert_turma((3, 3))
 
-for estudante in estudantes:
-    estudante_dao.insert_estudante(estudante)
+    # Insere dados na tabela Estudantes
+    estudante_dao.insert_estudante(("estudante1@unb.br", "123456", "Matemática", "senha", 0))
+    estudante_dao.insert_estudante(("estudante2@unb.br", "234567", "Física", "senha", 0))
+    estudante_dao.insert_estudante(("estudante3@unb.br", "345678", "Química", "senha", 0))
+    estudante_dao.insert_estudante(("admin@unb.br", "admin", "Administração", "senha", 1))
 
-estudante_dao.close()
+    # Insere dados na tabela Avaliações
+    avaliacao_dao.insert_avaliacao((1, 1, "Ótima aula!"))
+    avaliacao_dao.insert_avaliacao((2, 2, "Bom conteúdo, mas difícil."))
+    avaliacao_dao.insert_avaliacao((3, 3, "Precisa melhorar a didática."))
 
-# Populando a entidade Professores
-professor_dao = ProfessorDAO('database.db')
-
-professores = [
-    ('Professor 1', 1),
-    ('Professor 2', 1),
-    ('Professor 3', 2),
-    ('Professor 4', 2),
-
-]
-
-for professor in professores:
-    professor_dao.insert_professor(professor)
-
-professor_dao.close()   
-
-#Populando a tabela Departamentos
-departamento_dao = DepartamentoDAO('database.db')
-
-departamentos = [
-    ('Departamento 1',),
-    ('Departamento 2',),
-    ('Departamento 3',),
-]
-
-for departamento in departamentos:
-    departamento_dao.insert_departamento(departamento)
-
-departamento_dao.close()
-
-#Populando a tabela Disciplinas
-
-disciplina_dao = DisciplinaDAO('database.db')
-
-disciplinas = [
-    ('Disciplina 1', 1),
-    ('Disciplina 2', 1),
-    ('Disciplina 3', 2),
-
-]
-
-for disciplina in disciplinas:
-    disciplina_dao.insert_disciplina(disciplina)
-
-disciplina_dao.close()
-
-#Populando a tabela Turmas
-
-turma_dao = TurmaDAO('database.db')
-
-turmas = [
-    (1, 1),
-    (2, 2),
-    (3, 3),
-]
-for turma in turmas:
-    turma_dao.insert_turma(turma)
-
-turma_dao.close()
-
-
-#Populando a tabela Avaliacoes
-
-avaliacao_dao = AvaliacaoDAO('database.db')
-
-avaliacoes = [
-    (1, 1, 'Avaliação 1'),
-    (2, 2, 'Avaliação 2'),
-    (3, 3, 'Avaliação 3'),
-]
-
-for avaliacao in avaliacoes:
-    avaliacao_dao.insert_avaliacao(avaliacao)
-
-avaliacao_dao.close()
-
-#Populando a tabela Denuncias
-
-
-denuncia_dao = DenunciaDAO('database.db')
-
-denuncias = [
-    (1, 1, 1, 'Denuncia 1'),
-    (2, 2, 1, 'Denuncia 2'),
-    (3, 3, 1, 'Denuncia 3'),
-]
-
-
-for denuncia in denuncias:
-    denuncia_dao.insert_denuncia(denuncia)
-
-denuncia_dao.close()            
-
-
-# connection = sqlite3.connect('database.db')
-
-
-# cur = connection.cursor()
-
-# cur.execute("""INSERT INTO Departamentos (nome) VALUES ('MAT'), ('CIC'), ('FIS'), ('QUI') """)
-# cur.execute("""INSERT INTO Professores (nome, departamento_id) VALUES ('João', 1), ('Maria', 2), ('JosE', 3), ('Ana', 4) """)
-# cur.execute("""INSERT INTO Disciplinas (nome, departamento_id) VALUES ('CAL', 1), ('FTC',2), ('FIS', 3), ('QUI', 4) """)
-# cur.execute("""INSERT INTO Turmas (numero, disciplina_id, professor_id) VALUES (1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 4, 4) """)
-# cur.execute("""INSERT INTO Estudantes (email, matricula, curso, senha, e_administrador) VALUES ('anaponc@gmail.com', '190142120', 'cic', '123', 1), ('brenno@gmail.com', '190142121', 'fis', '123', 0), ('leo@gmail.com', '190142122', 'cic', '123', 0)""")
-# cur.execute("""INSERT INTO Avaliacoes (comentario, estudante_id, turma_id, avaliacao) VALUES ('Muito bom', 1, 1, '5'), ('Muito ruim', 2, 2, '1'), ('Bom', 3, 3, '4') """)
-
-# connection.commit()
-# connection.close()
-        
-
-        
+    # Insere dados na tabela Denuncias
+    denuncia_dao.insert_denuncia((1, 1, 4, "Comentário ofensivo."))
+    denuncia_dao.insert_denuncia((2, 2, 4, "Spam nos comentários."))
+    denuncia_dao.insert_denuncia((3, 3, 4, "Conteúdo inapropriado."))
