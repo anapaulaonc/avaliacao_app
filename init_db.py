@@ -23,6 +23,7 @@ def populate_db():
     departamento_dao = DepartamentoDAO('database.db')
     avaliacao_dao = AvaliacaoDAO('database.db')
     denuncia_dao = DenunciaDAO('database.db')
+    
 
     # Insere dados na tabela Departamentos
     departamento_dao.insert_departamento(("Departamento de Matemática",))
@@ -59,3 +60,5 @@ def populate_db():
     denuncia_dao.insert_denuncia((1, 1, 4, "Comentário ofensivo."))
     denuncia_dao.insert_denuncia((2, 2, 4, "Spam nos comentários."))
     denuncia_dao.insert_denuncia((3, 3, 4, "Conteúdo inapropriado."))
+
+populate_db()    

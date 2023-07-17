@@ -3,7 +3,10 @@ from werkzeug.security import generate_password_hash
 import sqlite3
 
 
+
 from flask_login import UserMixin, LoginManager, login_user
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
 
 
 
@@ -22,11 +25,34 @@ def get_student(student_id):
     conn.close()
     return student
 
+def get_professor(professor_id):
+    conn = get_db_connection()
+    professor = conn.execute('SELECT * FROM Professores WHERE id = ?',
+                        (professor_id,)).fetchone()
+    conn.close()
+    return professor
+
+def get_disciplina(disciplina_id):
+    conn = get_db_connection()
+    disciplina = conn.execute('SELECT * FROM Disciplinas WHERE id = ?',
+                        (disciplina_id,)).fetchone()
+    conn.close()
+    return disciplina
+
+def get_turma(turma_id):
+    conn = get_db_connection()
+    turma = conn.execute('SELECT * FROM Turmas WHERE id = ?', 
+                        (turma_id,)).fetchone()
+    conn.close()
+    return turma
+    
+
 def get_post(id):
     conn = get_db_connection()
     post = conn.execute('SELECT * FROM Avaliacoes WHERE id = ?', (id,)).fetchone()
     conn.close()
     return post
+
 
 
 
@@ -56,7 +82,6 @@ def main():
     try:
         cur.execute("SELECT * FROM Turmas")
         turmas = cur.fetchall()
-        print(turmas[0].numero)
     except Exception as e:
         print(e)
         
@@ -64,7 +89,7 @@ def main():
 
     return render_template('main.html', turmas=turmas)
 
-@app.route('/ver_avaliacoes/<turma_id>', methods=['GET'])
+@app.route('/ver_avaliacoes', methods=['GET'])
 def ver_avaliacoes(turma_id):
     conn = get_db_connection()
     cur = conn.cursor()
@@ -87,15 +112,19 @@ def login():
         conn = get_db_connection()
         estudante = conn.execute('SELECT * FROM Estudantes WHERE email = ?',
                         (email,)).fetchone()
+        print(estudante)
         conn.close()
 
         if estudante:
             if estudante['senha'] == senha:
                 session['matricula'] = estudante['matricula']
+    
                 return redirect(url_for('main'))
             else:
+                print(estudante['senha'])
                 flash('Senha incorreta!', 'danger')
         else:
+            print('Email incorreto!')
             flash('Email incorreto!', 'danger')
 
     return render_template('login.html')
@@ -122,7 +151,7 @@ def register():
         email = request.form.get('email')
         matricula = request.form.get('matricula')
         curso = request.form.get('curso')
-        senha = generate_password_hash(request.form.get('senha'), method='sha256')
+        senha = request.form.get('senha')
         e_administrador = request.form.get('e_administrador') in ['true', 'True', '1', 'on']
 
         conn = get_db_connection()
@@ -134,9 +163,14 @@ def register():
 
         session['matricula'] = matricula
         session['email'] = email
-
+        session['curso'] = curso
+        session['senha'] = senha
+        print('AQUI A SENHA:')
+        print(session['senha'])
+        
         return redirect(url_for('main'))
 
     return render_template('register.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

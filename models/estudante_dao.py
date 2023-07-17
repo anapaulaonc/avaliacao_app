@@ -26,6 +26,7 @@ class EstudanteDAO:
         cur.execute(sql, (id,))
         self.conn.commit()
 
+  
     def close(self):
         if self.conn:
             self.conn.close()

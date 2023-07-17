@@ -20,9 +20,8 @@
     <div class="turmas">
         {% for turma in turmas %}
             <div class="card">
-                <h3>{{ turma.nome }}</h3>
-                <p>{{ turma.descricao }}</p>
-                <a href="{{ url_for('avaliacao', id=turma.id) }}">Avaliações</a>
+                <h3>{{ turma.id}}</h3>
+                <!-- <a href="{{ url_for('ver_avaliacoes', id=turma.id) }}">Avaliações</a> -->
             </div>
         {% endfor %}
     </div>
