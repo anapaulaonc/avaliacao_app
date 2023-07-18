@@ -3,39 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <title>Avaliação</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #ffe6e6;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-        }
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffe6e6;
+            }
 
-        .container {
+            .container {
             max-width: 500px;
+            margin: 0 auto; /* Centralizar o container horizontalmente */
             padding: 20px;
+            padding-right: 40px;
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+            }
 
-        .sidebar {
+            .sidebar {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin-right: 20px;
-
-            justify-content: flex-start;
             width: 80px;
             padding: 20px;
-            background-color: #fff;
+            background-color: #ff8080;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+            position: fixed;
+            left: 0; /* Alinhar a sidebar no canto esquerdo */
+            top: 0; /* Alinhar a sidebar no topo */
+            }
 
-        .sidebar a {
+            .sidebar a {
             display: block;
             margin-bottom: 10px;
             padding: 10px;
@@ -43,48 +49,58 @@
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
-            
-        }
-        .content {
+            }
+            .sidebar a:hover {
+                background-color: #ff5050;
+            }
+
+            .content {
             flex-grow: 1;
             padding: 20px;
-        }
-
-        h1 {
+            margin-left: 100px; /* Dar espaço à esquerda para acomodar a sidebar */
+            }
+            h1 {
             color: #ff5050;
             text-align: center;
             margin-bottom: 20px;
-        }
+            }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+            .form-group {
+                margin-bottom: 20px;
+            }
 
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+            .form-group label {
+                display: block;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
 
-        .form-group input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+            .form-group input[type="text"] {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
 
-        button[type="submit"] {
-            padding: 10px 20px;
-            background-color: #ff8080;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+            button[type="submit"] {
+                padding: 10px 20px;
+                background-color: #ff8080;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
 
-        button[type="submit"]:hover {
-            background-color: #ff5050;
-        }
+            button[type="submit"]:hover {
+                background-color: #ff5050;
+            }
+
+                h1 {
+                color: #ff5050;
+                text-align: center;
+                margin-bottom: 20px;
+                }
+
     </style>
 </head>
 <body>
