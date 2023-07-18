@@ -4,8 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avaliação</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe6e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 500px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 20px;
+
+            justify-content: flex-start;
+            width: 80px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar a {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #ff8080;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            
+        }
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #ff5050;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #ff8080;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #ff5050;
+        }
+    </style>
 </head>
 <body>
-    <h1> Avaliações <h1>
+    <div class="sidebar">
+        <a href="/main"><i class="fas fa-pencil-alt"></i></a>
+        <a href="/turmas"><i class="fas fa-graduation-cap"></i></a>
+        <a href="/professores"><i  class="fas fa-chalkboard-teacher"></i></a>
+    </div>
+    <div class="content">
+        <div class="container">
+            <h1>Avalie a turma {{turma['id']}} da disciplina de {{disciplina['nome']}}</h1>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="avaliacao">Avalie</label>
+                    <input type="text" name="avaliacao" id="avaliacao" placeholder="Avalie aqui" required>
+                </div>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>

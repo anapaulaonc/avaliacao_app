@@ -83,13 +83,12 @@
         <a href="/professores"><i  class="fas fa-chalkboard-teacher"></i></a>
     </div>
     <div class="content">
-    <h1> Avaliações das Turmas!</h1>
+    <h1>Turmas disponívies!</h1>
     <br/>
     <div class="card-container">
         {% for result in results %}
             <div class="card">
                 <h3 class="card-title">{{ result[2] }}, Turma:{{ result[3] }}</h3>
-                <td class="card-text">{{ result[0] }} - {{ result[1] }}</td>
                 <br/>
                 <td class="card-link" ><a href="{{ url_for('avaliar', turma_id=result[3]) }}">Faça sua avaliação</a></td>
             </div>

@@ -73,7 +73,7 @@ def main():
     cur = conn.cursor()
 
     #ter todos os professores
-    cur.execute("SELECT * FROM Avaliacoes")
+    cur.execute("SELECT * FROM Avaliacoes ")
     avaliacoes = cur.fetchall()
     cur.execute("SELECT * FROM Professores")
     professores = cur.fetchall()
@@ -83,9 +83,9 @@ def main():
     estudantes = cur.fetchall()
     # Executa a consulta usando JOIN entre as tabelas Avaliacoes, Estudantes, Disciplinas e Turmas
     cur.execute('SELECT Avaliacoes.avaliacao, Estudantes.email, Disciplinas.nome, Turmas.id FROM Avaliacoes JOIN Estudantes ON Avaliacoes.estudante_id = Estudantes.id JOIN Turmas ON Avaliacoes.turma_id = Turmas.id JOIN Disciplinas ON Turmas.disciplina_id = Disciplinas.id')
-
-    # Recupera os resultados da consulta
     results = cur.fetchall()
+    # Recupera os resultados da consulta
+    
 
 
 
@@ -94,19 +94,93 @@ def main():
 
     return render_template('main.html', avaliacoes=avaliacoes, professores=professores, turmas=turmas, estudantes=estudantes, results=results)
 
+@app.route('/turmas', methods=['GET', 'POST'])
+def turmas():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    #ter todos os professores
+    cur.execute("SELECT * FROM Avaliacoes ")
+    avaliacoes = cur.fetchall()
+    cur.execute("SELECT * FROM Professores")
+    professores = cur.fetchall()
+    cur.execute("SELECT * FROM Turmas")
+    turmas = cur.fetchall()
+    cur.execute("SELECT * FROM Estudantes")
+    estudantes = cur.fetchall()
+    # Executa a consulta usando JOIN entre as tabelas Avaliacoes, Estudantes, Disciplinas e Turmas
+    cur.execute('SELECT Avaliacoes.avaliacao, Estudantes.email, Disciplinas.nome, Turmas.id FROM Avaliacoes JOIN Estudantes ON Avaliacoes.estudante_id = Estudantes.id JOIN Turmas ON Avaliacoes.turma_id = Turmas.id JOIN Disciplinas ON Turmas.disciplina_id = Disciplinas.id')
+    results = cur.fetchall()
+    # Recupera os resultados da consulta
+    
+
+
+
+        
+    conn.close()
+
+    return render_template('turmas.html', avaliacoes=avaliacoes, professores=professores, turmas=turmas, estudantes=estudantes, results=results)
+
+@app.route('/professores', methods=['GET', 'POST'])
+def professores():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    #ter todos os professores
+    cur.execute("SELECT * FROM Avaliacoes ")
+    avaliacoes = cur.fetchall()
+    cur.execute("SELECT * FROM Professores")
+    professores = cur.fetchall()
+    cur.execute("SELECT * FROM Turmas")
+    turmas = cur.fetchall()
+    cur.execute("SELECT * FROM Estudantes")
+    estudantes = cur.fetchall()
+    # Executa a consulta usando JOIN entre as tabelas Avaliacoes, Estudantes, Disciplinas e Turmas
+  
+
+
+
+        
+    conn.close()
+
+    return render_template('professores.html', avaliacoes=avaliacoes, professores=professores, turmas=turmas, estudantes=estudantes)
+
+
 
 @app.route('/avaliar/<turma_id>', methods=['GET', 'POST'])
 def avaliar(turma_id):
     conn = get_db_connection()
+
+    cur = conn.cursor()
+    estudante_id = session.get('estudante_id')
+    if request.method == 'POST':
+        conn = get_db_connection()
+        cur = conn.cursor()
+        avaliacao = request.form['avaliacao']
+        cur.execute("INSERT INTO Avaliacoes (avaliacao, estudante_id, turma_id) VALUES (?, ?, ?)", (avaliacao, estudante_id, turma_id))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('main'))
+    session['turma_id'] = turma_id
+    cur.execute("SELECT * FROM Turmas WHERE id = ?", (turma_id,))
+    turma = cur.fetchone()
+    cur.execute("SELECT * FROM Disciplinas WHERE id = ?", (turma['disciplina_id'],))
+    disciplina = cur.fetchone()
+    
+
+
+    conn = get_db_connection()
     cur = conn.cursor()
 
     #ter todas as avaliacoes do professor
-    cur.execute("SELECT * FROM Avaliacoes WHERE turma_id = ?", (turma_id,))
 
-    avaliacoes = cur.fetchall()
+
+    cur.execute("SELECT * FROM Turmas WHERE id = ?", (turma_id))
+    turma = cur.fetchone()
+
     conn.close()
 
-    return render_template('avaliacao.html', avaliacoes=avaliacoes)
+    return render_template('avaliacao.html', turma=turma, disciplina=disciplina)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -125,6 +199,8 @@ def login():
         if estudante:
             if estudante['senha'] == senha:
                 session['matricula'] = estudante['matricula']
+                session['estudante_id'] = estudante['id']
+    
     
                 return redirect(url_for('main'))
             else:
@@ -133,6 +209,7 @@ def login():
         else:
             print('Email incorreto!')
             flash('Email incorreto!', 'danger')
+            
 
     return render_template('login.html')
 

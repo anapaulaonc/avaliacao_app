@@ -53,6 +53,8 @@ def populate_db():
 
     # Insere dados na tabela Avaliações
     avaliacao_dao.insert_avaliacao((1, 1, "Ótima aula!"))
+    avaliacao_dao.insert_avaliacao((2, 1, "Não gostei!"))
+
     avaliacao_dao.insert_avaliacao((2, 2, "Bom conteúdo, mas difícil."))
     avaliacao_dao.insert_avaliacao((3, 3, "Precisa melhorar a didática."))
 

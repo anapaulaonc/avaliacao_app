@@ -4,13 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffe6e6;
+        }
+
+        .logo {
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .buttons a {
+            padding: 10px 20px;
+            background-color: #ff8080;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .buttons a:hover {
+            background-color: #ff5050;
+        }
+    </style>
 </head>
 <body>
-    
-    <h1>Login authentication system in flask.</h1>
-    
+    <div class="logo">
+        <img src="{{ url_for('static', filename='./images/logo.png') }}" alt="Logo">
+    </div>
 
-    <a href="{{ url_for('login') }}">Login Page</a><br>
-    <a href="{{ url_for('register') }}">Register Page</a>
+
+    <div class="buttons">
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Cadastro</a>
+    </div>
 </body>
 </html>
