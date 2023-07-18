@@ -4,12 +4,6 @@ import sqlite3
 
 
 
-from flask_login import UserMixin, LoginManager, login_user
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-
-
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisisasecretkey'
 
@@ -47,9 +41,9 @@ def get_turma(turma_id):
     return turma
     
 
-def get_post(id):
+def get_avaliacao(avaliacao_id):
     conn = get_db_connection()
-    post = conn.execute('SELECT * FROM Avaliacoes WHERE id = ?', (id,)).fetchone()
+    post = conn.execute('SELECT * FROM Avaliacoes WHERE id = ?', (avaliacao_id,)).fetchone()
     conn.close()
     return post
 
@@ -79,18 +73,30 @@ def main():
     cur = conn.cursor()
 
     #ter todos os professores
-    try:
-        cur.execute("SELECT * FROM Turmas")
-        turmas = cur.fetchall()
-    except Exception as e:
-        print(e)
+    cur.execute("SELECT * FROM Avaliacoes")
+    avaliacoes = cur.fetchall()
+    cur.execute("SELECT * FROM Professores")
+    professores = cur.fetchall()
+    cur.execute("SELECT * FROM Turmas")
+    turmas = cur.fetchall()
+    cur.execute("SELECT * FROM Estudantes")
+    estudantes = cur.fetchall()
+    # Executa a consulta usando JOIN entre as tabelas Avaliacoes, Estudantes, Disciplinas e Turmas
+    cur.execute('SELECT Avaliacoes.avaliacao, Estudantes.email, Disciplinas.nome, Turmas.id FROM Avaliacoes JOIN Estudantes ON Avaliacoes.estudante_id = Estudantes.id JOIN Turmas ON Avaliacoes.turma_id = Turmas.id JOIN Disciplinas ON Turmas.disciplina_id = Disciplinas.id')
+
+    # Recupera os resultados da consulta
+    results = cur.fetchall()
+
+
+
         
     conn.close()
 
-    return render_template('main.html', turmas=turmas)
+    return render_template('main.html', avaliacoes=avaliacoes, professores=professores, turmas=turmas, estudantes=estudantes, results=results)
 
-@app.route('/ver_avaliacoes', methods=['GET'])
-def ver_avaliacoes(turma_id):
+
+@app.route('/avaliar/<turma_id>', methods=['GET', 'POST'])
+def avaliar(turma_id):
     conn = get_db_connection()
     cur = conn.cursor()
 
@@ -101,6 +107,7 @@ def ver_avaliacoes(turma_id):
     conn.close()
 
     return render_template('avaliacao.html', avaliacoes=avaliacoes)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -121,28 +128,13 @@ def login():
     
                 return redirect(url_for('main'))
             else:
-                print(estudante['senha'])
+  
                 flash('Senha incorreta!', 'danger')
         else:
             print('Email incorreto!')
             flash('Email incorreto!', 'danger')
 
     return render_template('login.html')
-
-
-
-#     if form.validate_on_submit():
-#         user = Estudante.query.filter_by(email=form.email.data).first()
-#         if user:
-#             if user.senha == form.senha.data:
-#                 flash('Logado com sucesso!', 'success')
-#                 return redirect(url_for('home'))
-#             else:
-#                 flash('Senha incorreta!', 'danger')
-#         else:
-#             flash('Email incorreto!', 'danger')
-    
-#     return render_template('login.html')
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def register():
@@ -152,12 +144,11 @@ def register():
         matricula = request.form.get('matricula')
         curso = request.form.get('curso')
         senha = request.form.get('senha')
-        e_administrador = request.form.get('e_administrador') in ['true', 'True', '1', 'on']
 
         conn = get_db_connection()
 
         conn.execute("INSERT INTO Estudantes (email, matricula, curso, senha, e_administrador) VALUES (?, ?, ?, ?, ?)",
-                    (email, matricula, curso, senha, e_administrador))
+                    (email, matricula, curso, senha))
         conn.commit()
         conn.close()
 
@@ -165,8 +156,7 @@ def register():
         session['email'] = email
         session['curso'] = curso
         session['senha'] = senha
-        print('AQUI A SENHA:')
-        print(session['senha'])
+    
         
         return redirect(url_for('main'))
 

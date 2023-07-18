@@ -16,12 +16,13 @@
 <body>
     <h1> Avaliações das Turmas!</h1>
     <br/>
-    <h1>Turmas</h1>
-    <div class="turmas">
-        {% for turma in turmas %}
+    <h1>Avaliacoes</h1>
+    <div class="results">
+        {% for result in results %}
             <div class="card">
-                <h3>{{ turma.id}}</h3>
-                <!-- <a href="{{ url_for('ver_avaliacoes', id=turma.id) }}">Avaliações</a> -->
+                <h3>{{ result[2] }}, Turma:{{ result[3] }}</h3>
+                <td>{{ result[0] }} - {{ result[1] }}</td>
+                <td><a href="{{ url_for('avaliar', turma_id=result[3]) }}">Avaliar</a></td>
             </div>
         {% endfor %}
     </div>
